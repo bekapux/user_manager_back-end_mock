@@ -13,7 +13,7 @@ public class UsersController : Controller
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
     public ActionResult<List<User>> Paginate(int page = 1, int itemsPerPage = 5)
     {
-        return Ok(DbMock.users.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x=>new UserDto
+        return Ok(DbMock.users.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -21,8 +21,8 @@ public class UsersController : Controller
             PersonalNumber = x.PersonalNumber,
             Email = x.Email,
             DateOfBirth = x.DateOfBirth,
-            Category = DbMock.categories.FirstOrDefault(cat=> cat.Id == x.Id),
-            Status = DbMock.statuses.FirstOrDefault(sta=> sta.Id == x.Id)
+            Category = DbMock.categories.FirstOrDefault(cat => cat.Id == x.Id),
+            Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == x.Id)
         }));
     }
 
@@ -39,8 +39,8 @@ public class UsersController : Controller
             PersonalNumber = user.PersonalNumber,
             Email = user.Email,
             DateOfBirth = user.DateOfBirth,
-            Category = DbMock.categories.FirstOrDefault(cat=> cat.Id == user.Id),
-            Status = DbMock.statuses.FirstOrDefault(sta=> sta.Id == user.Id)
+            Category = DbMock.categories.FirstOrDefault(cat => cat.Id == user.Id),
+            Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == user.Id)
         });
     }
 
@@ -74,20 +74,30 @@ public class UsersController : Controller
         DbMock.users.Remove(user);
         return Ok();
     }
-    
-    [HttpPost("filter")]
-    public ActionResult<List<User>> GetFiltered(UsersFilterOptions filterOptions)
+
+    [HttpPost("filter/{page:int}/{itemsPerPage}")]
+    public ActionResult<List<User>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
     {
         IEnumerable<User> query = DbMock.users;
-        if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));        
-        if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.Contains(filterOptions.LastNameFilter));        
+        if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));
+        if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.Contains(filterOptions.LastNameFilter));
         if (filterOptions.HasEmailFilter) query = query.Where(x => x.Email.Contains(filterOptions.EmailFilter));
-        if (filterOptions.HasCategoryIdFilter) query = query.Where(x => x.CategoryId == filterOptions.CategoryIdFilter);        
-        if (filterOptions.HasStatusIdFilter) query = query.Where(x => x.StatusId == filterOptions.StatusIdFilter);        
+        if (filterOptions.HasCategoryIdFilter) query = query.Where(x => x.CategoryId == filterOptions.CategoryIdFilter);
+        if (filterOptions.HasStatusIdFilter) query = query.Where(x => x.StatusId == filterOptions.StatusIdFilter);
         if (filterOptions.HasPersonalNumberFilter) query = query.Where(x => x.PersonalNumber == filterOptions.PersonalNumberFilter);
         if (filterOptions.HasDateOfBirthEndFilter) query = query.Where(x => x.DateOfBirth < filterOptions.DateOfBirthEnd);
         if (filterOptions.HasDateOfBirthStartFilter) query = query.Where(x => x.DateOfBirth > filterOptions.DateOfBirthStart);
-        return Ok(query);
+        return Ok(query.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
+        {
+            Id = x.Id,
+            FirstName = x.FirstName,
+            LastName = x.LastName,
+            PersonalNumber = x.PersonalNumber,
+            Email = x.Email,
+            DateOfBirth = x.DateOfBirth,
+            Category = DbMock.categories.FirstOrDefault(cat => cat.Id == x.Id),
+            Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == x.Id)
+        }));
     }
 
     #endregion
