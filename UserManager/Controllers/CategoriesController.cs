@@ -16,13 +16,13 @@ public class CategoriesController : Controller
     }
 
     [HttpGet("get-page-number/{itemsPerPage:int}")]
-    public ActionResult<List<Category>> GetPageNumber(int itemsPerPage = 5)
+    public ActionResult<int> GetPageNumber(int itemsPerPage = 5)
     {
         return Ok(Math.Ceiling((float)DbMock.categories.Count/itemsPerPage));
     }
 
     [HttpGet("get-by-id/{id:int}")]
-    public ActionResult<List<Category>> GetById(int id)
+    public ActionResult<Category> GetById(int id)
     {
         var category = DbMock.categories.FirstOrDefault(x => x.Id == id);
         if (category == null) return NotFound();

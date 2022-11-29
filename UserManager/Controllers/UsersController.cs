@@ -29,7 +29,7 @@ public class UsersController : Controller
     }
 
     [HttpGet("get-page-number/{itemsPerPage:int}")]
-    public ActionResult<List<Category>> GetPageNumber(int itemsPerPage = 5)
+    public ActionResult<List<User>> GetPageNumber(int itemsPerPage = 5)
     {
         return Ok(Math.Ceiling((float)DbMock.users.Count/itemsPerPage));
     }

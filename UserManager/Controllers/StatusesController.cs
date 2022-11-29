@@ -15,13 +15,13 @@ public class StatusesController : Controller
     }
 
     [HttpGet("get-page-number/{itemsPerPage:int}")]
-    public ActionResult<List<Category>> GetPageNumber(int itemsPerPage = 5)
+    public ActionResult<int> GetPageNumber(int itemsPerPage = 5)
     {
         return Ok(Math.Ceiling((float)DbMock.statuses.Count/itemsPerPage));
     }
     
     [HttpGet("get-by-id/{id:int}")]
-    public ActionResult<List<Status>> GetById(int id)
+    public ActionResult<Status> GetById(int id)
     {
         var status = DbMock.statuses.FirstOrDefault(x => x.Id == id);
         if (status == null) return NotFound();
