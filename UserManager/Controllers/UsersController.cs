@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UserManager.DTOs;
 using UserManager.Models;
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace UserManager.Controllers;
 
@@ -24,6 +26,12 @@ public class UsersController : Controller
             Category = DbMock.categories.FirstOrDefault(cat => cat.Id == x.Id),
             Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == x.Id)
         }));
+    }
+
+    [HttpGet("get-page-number/{itemsPerPage:int}")]
+    public ActionResult<List<Category>> GetPageNumber(int itemsPerPage = 5)
+    {
+        return Ok(Math.Ceiling((float)DbMock.users.Count/itemsPerPage));
     }
 
     [HttpGet("get-by-id/{id:int}")]
@@ -79,6 +87,7 @@ public class UsersController : Controller
     public ActionResult<List<User>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
     {
         IEnumerable<User> query = DbMock.users;
+        
         if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));
         if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.Contains(filterOptions.LastNameFilter));
         if (filterOptions.HasEmailFilter) query = query.Where(x => x.Email.Contains(filterOptions.EmailFilter));

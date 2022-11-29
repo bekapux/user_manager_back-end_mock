@@ -10,9 +10,15 @@ public class CategoriesController : Controller
     #region Actions
 
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<Category>> Paginate(int page=1, int itemsPerPage=5)
+    public ActionResult<List<Category>> Paginate(int page = 1, int itemsPerPage = 5)
     {
         return Ok(DbMock.categories.Skip((page - 1) * itemsPerPage).Take(itemsPerPage));
+    }
+
+    [HttpGet("get-page-number/{itemsPerPage:int}")]
+    public ActionResult<List<Category>> GetPageNumber(int itemsPerPage = 5)
+    {
+        return Ok(Math.Ceiling((float)DbMock.categories.Count/itemsPerPage));
     }
 
     [HttpGet("get-by-id/{id:int}")]
