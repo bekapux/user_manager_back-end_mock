@@ -14,7 +14,8 @@ public class StatusesController : Controller
     {
         var result = new GetPaginatedStatusesDto()
         {
-            Statuses = DbMock.Statuses.Skip((page /*-1*/) * itemsPerPage).Take(itemsPerPage)
+            Statuses = DbMock.Statuses.Skip((page /*-1*/) * itemsPerPage).Take(itemsPerPage),
+            RowNumber = DbMock.Statuses.Count
         };
         return Ok(result);
     }
@@ -59,12 +60,15 @@ public class StatusesController : Controller
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
     public ActionResult<GetPaginatedStatusesDto> GetFiltered(string statusFilter, int page = 1, int itemsPerPage = 5)
     {
-        return Ok(new GetPaginatedStatusesDto()
+        var filteredStatuses = new List<Status>(DbMock.Statuses)
+            .Where(x => x.Name.ToUpper().Contains(statusFilter.ToUpper())).ToList();
+
+        return Ok( new GetPaginatedStatusesDto()
         {
-            Statuses = DbMock.Statuses
-                .Where(x => x.Name.ToUpper().Contains(statusFilter.ToUpper()))
+            Statuses = filteredStatuses
                 .Skip((page - 1) * itemsPerPage)
-                .Take(itemsPerPage)
+                .Take(itemsPerPage),
+            RowNumber = filteredStatuses.Count()
         });
     }
     #endregion

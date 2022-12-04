@@ -5,6 +5,6 @@ namespace UserManager.DTOs
     public class GetPaginatedStatusesDto
     {
         public IEnumerable<Status> Statuses { get; set; }
-        public int? RowNumber => Statuses.Count();
+        public int RowNumber{ get; set; }
     }
 }

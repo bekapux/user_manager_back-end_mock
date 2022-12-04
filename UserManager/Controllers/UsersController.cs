@@ -31,6 +31,7 @@ public class UsersController : Controller
         var getPaginatedUsers = new GetPaginatedUsersDto
         {
             Users = users,
+            RowNumber = DbMock.Users.Count
         };
         return Ok(getPaginatedUsers);
     }
@@ -108,11 +109,12 @@ public class UsersController : Controller
             DateOfBirth = x.DateOfBirth,
             Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == x.Id),
             Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == x.Id)
-        });
+        }).ToList();
 
         var result = new GetPaginatedUsersDto()
         {
-            Users = users
+            Users = users,
+            RowNumber = query.Count()
         };
 
         return Ok(result);

@@ -15,7 +15,8 @@ public class CategoriesController : Controller
     {
         var paginatedCategories = new GetPaginatedCategoriesDto
         {
-            Categories = DbMock.Categories.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage)
+            Categories = DbMock.Categories.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage),
+            RowNumber = DbMock.Categories.Count
         };
         return Ok(paginatedCategories);
     }
@@ -60,12 +61,15 @@ public class CategoriesController : Controller
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
     public ActionResult<GetPaginatedCategoriesDto> GetFiltered(string categoryFilter, int page = 1, int itemsPerPage = 5)
     {
+        var filteredCategories = new List<Category>(DbMock.Categories)
+            .Where(x => x.Name.ToUpper().Contains(categoryFilter.ToUpper())).ToList();
+
         return Ok( new GetPaginatedCategoriesDto()
         {
-            Categories = DbMock.Categories
-                .Where(x => x.Name.ToUpper().Contains(categoryFilter.ToUpper()))
+            Categories = filteredCategories
                 .Skip((page - 1) * itemsPerPage)
-                .Take(itemsPerPage)
+                .Take(itemsPerPage),
+            RowNumber = filteredCategories.Count()
         });
     }
 
