@@ -87,7 +87,7 @@ public class UsersController : Controller
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
     public ActionResult<List<UserDto>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
     {
-        IEnumerable<User> query = DbMock.Users;
+        IEnumerable<User> query = new List<User>(DbMock.Users);
 
         if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));
         if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.ToUpper().Contains(filterOptions.LastNameFilter.ToUpper()));
