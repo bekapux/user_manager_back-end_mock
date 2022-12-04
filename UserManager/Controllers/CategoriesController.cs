@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserManager.DTOs;
 using UserManager.Models;
 
 namespace UserManager.Controllers;
@@ -10,9 +11,13 @@ public class CategoriesController : Controller
     #region Actions
 
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<Category>> Paginate(int page = 0, int itemsPerPage = 5)
+    public ActionResult<GetPaginatedCategoriesDto> Paginate(int page = 0, int itemsPerPage = 5)
     {
-        return Ok(DbMock.categories.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage));
+        var paginatedCategories = new GetPaginatedCategoriesDto
+        {
+            Categories = DbMock.categories.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage)
+        };
+        return Ok(paginatedCategories);
     }
 
     [HttpGet("get-page-number/{itemsPerPage:int}")]

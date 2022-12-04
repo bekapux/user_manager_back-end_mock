@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
 using UserManager.DTOs;
 using UserManager.Models;
 using System.Linq.Expressions;
@@ -13,9 +14,9 @@ public class UsersController : Controller
     #region Actions
 
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<User>> Paginate(int page = 0, int itemsPerPage = 5)
+    public ActionResult<GetPaginatedUsersDto> Paginate(int page = 0, int itemsPerPage = 5)
     {
-        return Ok(DbMock.users.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
+        var users = DbMock.users.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -25,13 +26,13 @@ public class UsersController : Controller
             DateOfBirth = x.DateOfBirth,
             Category = DbMock.categories.FirstOrDefault(cat => cat.Id == x.Id),
             Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == x.Id)
-        }));
-    }
+        }).ToList();
 
-    [HttpGet("get-page-number/{itemsPerPage:int}")]
-    public ActionResult<List<User>> GetPageNumber(int itemsPerPage = 5)
-    {
-        return Ok(Math.Ceiling((float)DbMock.users.Count / itemsPerPage));
+        var getPaginatedUsers = new GetPaginatedUsersDto
+        {
+            Users = users,
+        };
+        return Ok(getPaginatedUsers);
     }
 
     [HttpGet("get-by-id/{id:int}")]
