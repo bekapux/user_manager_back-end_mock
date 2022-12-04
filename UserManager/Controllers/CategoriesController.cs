@@ -58,7 +58,7 @@ public class CategoriesController : Controller
         return Ok();
     }
 
-    [HttpGet("filter/{page:int}/{itemsPerPage:int}/{filterPhrase")]
+    [HttpGet("filter/{page:int}/{itemsPerPage:int}/{filterPhrase}")]
     public ActionResult<GetPaginatedCategoriesDto> GetFiltered(string filterPhrase, int page = 1, int itemsPerPage = 5)
     {
         var filteredCategories = new List<Category>(DbMock.Categories)
