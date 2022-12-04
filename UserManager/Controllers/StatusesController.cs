@@ -14,21 +14,15 @@ public class StatusesController : Controller
     {
         var result = new GetPaginatedStatusesDto()
         {
-            Statuses = DbMock.statuses.Skip((page /*-1*/) * itemsPerPage).Take(itemsPerPage)
+            Statuses = DbMock.Statuses.Skip((page /*-1*/) * itemsPerPage).Take(itemsPerPage)
         };
         return Ok(result);
-    }
-
-    [HttpGet("get-page-number/{itemsPerPage:int}")]
-    public ActionResult<int> GetPageNumber(int itemsPerPage = 5)
-    {
-        return Ok(Math.Ceiling((float)DbMock.statuses.Count / itemsPerPage));
     }
 
     [HttpGet("get-by-id/{id:int}")]
     public ActionResult<Status> GetById(int id)
     {
-        var status = DbMock.statuses.FirstOrDefault(x => x.Id == id);
+        var status = DbMock.Statuses.FirstOrDefault(x => x.Id == id);
         if (status == null) return NotFound();
         return Ok(status);
     }
@@ -36,10 +30,10 @@ public class StatusesController : Controller
     [HttpPost("add-new/{name}")]
     public ActionResult AddNew(string name)
     {
-        DbMock.statuses.Add(new Status
+        DbMock.Statuses.Add(new Status
         {
             Name = name,
-            Id = DbMock.statuses.Max((x => x.Id)) + 1
+            Id = DbMock.Statuses.Max((x => x.Id)) + 1
         });
         return Accepted();
     }
@@ -47,7 +41,7 @@ public class StatusesController : Controller
     [HttpPut("update/{id:int}/{name}")]
     public ActionResult Update(int id, string name)
     {
-        var status = DbMock.statuses.FirstOrDefault(x => x.Id == id);
+        var status = DbMock.Statuses.FirstOrDefault(x => x.Id == id);
         if (status == null) return NotFound();
         status.Name = name;
         return Ok();
@@ -56,22 +50,22 @@ public class StatusesController : Controller
     [HttpDelete("delete/{id:int}")]
     public ActionResult Delete(int id)
     {
-        var status = DbMock.statuses.FirstOrDefault(x => x.Id == id);
+        var status = DbMock.Statuses.FirstOrDefault(x => x.Id == id);
         if (status == null) return NotFound();
-        DbMock.statuses.Remove(status);
+        DbMock.Statuses.Remove(status);
         return Ok();
     }
 
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<Status>> GetFiltered(string statusFilter, int page = 1, int itemsPerPage = 5)
+    public ActionResult<GetPaginatedStatusesDto> GetFiltered(string statusFilter, int page = 1, int itemsPerPage = 5)
     {
-        IEnumerable<Status> query = new List<Status>(DbMock.statuses);
-        return Ok(
-            query
-                .Where(x => x.Name.Contains(statusFilter))
+        return Ok(new GetPaginatedStatusesDto()
+        {
+            Statuses = DbMock.Statuses
+                .Where(x => x.Name.ToUpper().Contains(statusFilter.ToUpper()))
                 .Skip((page - 1) * itemsPerPage)
                 .Take(itemsPerPage)
-        );
+        });
     }
     #endregion
 }

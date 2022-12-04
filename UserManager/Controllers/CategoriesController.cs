@@ -15,21 +15,15 @@ public class CategoriesController : Controller
     {
         var paginatedCategories = new GetPaginatedCategoriesDto
         {
-            Categories = DbMock.categories.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage)
+            Categories = DbMock.Categories.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage)
         };
         return Ok(paginatedCategories);
-    }
-
-    [HttpGet("get-page-number/{itemsPerPage:int}")]
-    public ActionResult<int> GetPageNumber(int itemsPerPage = 5)
-    {
-        return Ok(Math.Ceiling((float)DbMock.categories.Count/itemsPerPage));
     }
 
     [HttpGet("get-by-id/{id:int}")]
     public ActionResult<Category> GetById(int id)
     {
-        var category = DbMock.categories.FirstOrDefault(x => x.Id == id);
+        var category = DbMock.Categories.FirstOrDefault(x => x.Id == id);
         if (category == null) return NotFound();
         return Ok(category);
     }
@@ -37,10 +31,10 @@ public class CategoriesController : Controller
     [HttpPost("add-new/{name}")]
     public ActionResult AddNew(string name)
     {
-        DbMock.categories.Add(new Category()
+        DbMock.Categories.Add(new Category()
         {
             Name = name,
-            Id = DbMock.categories.Max((x => x.Id)) + 1
+            Id = DbMock.Categories.Max((x => x.Id)) + 1
         });
         return Accepted();
     }
@@ -48,7 +42,7 @@ public class CategoriesController : Controller
     [HttpPut("update/{id:int}/{name}")]
     public ActionResult Update(int id, string name)
     {
-        var category = DbMock.categories.FirstOrDefault(x => x.Id == id);
+        var category = DbMock.Categories.FirstOrDefault(x => x.Id == id);
         if (category == null) return NotFound();
         category.Name = name;
         return Ok();
@@ -57,22 +51,22 @@ public class CategoriesController : Controller
     [HttpDelete("delete/{id:int}")]
     public ActionResult Delete(int id)
     {
-        var category = DbMock.categories.FirstOrDefault(x => x.Id == id);
+        var category = DbMock.Categories.FirstOrDefault(x => x.Id == id);
         if (category == null) return NotFound();
-        DbMock.categories.Remove(category);
+        DbMock.Categories.Remove(category);
         return Ok();
     }
 
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<Category>> GetFiltered(string categoryFilter, int page = 1, int itemsPerPage = 5)
+    public ActionResult<GetPaginatedCategoriesDto> GetFiltered(string categoryFilter, int page = 1, int itemsPerPage = 5)
     {
-        IEnumerable<Category> query = new List<Category>(DbMock.categories);
-        return Ok(
-            query
-                .Where(x => x.Name.Contains(categoryFilter))
+        return Ok( new GetPaginatedCategoriesDto()
+        {
+            Categories = DbMock.Categories
+                .Where(x => x.Name.ToUpper().Contains(categoryFilter.ToUpper()))
                 .Skip((page - 1) * itemsPerPage)
                 .Take(itemsPerPage)
-        );
+        });
     }
 
     #endregion

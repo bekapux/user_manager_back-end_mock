@@ -16,7 +16,7 @@ public class UsersController : Controller
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
     public ActionResult<GetPaginatedUsersDto> Paginate(int page = 0, int itemsPerPage = 5)
     {
-        var users = DbMock.users.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
+        var users = DbMock.Users.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -24,8 +24,8 @@ public class UsersController : Controller
             PersonalNumber = x.PersonalNumber,
             Email = x.Email,
             DateOfBirth = x.DateOfBirth,
-            Category = DbMock.categories.FirstOrDefault(cat => cat.Id == x.Id),
-            Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == x.Id)
+            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == x.Id),
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == x.Id)
         }).ToList();
 
         var getPaginatedUsers = new GetPaginatedUsersDto
@@ -38,7 +38,7 @@ public class UsersController : Controller
     [HttpGet("get-by-id/{id:int}")]
     public ActionResult<List<User>> GetById(int id)
     {
-        var user = DbMock.users.FirstOrDefault(x => x.Id == id);
+        var user = DbMock.Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
         return Ok(new UserDto()
         {
@@ -48,22 +48,22 @@ public class UsersController : Controller
             PersonalNumber = user.PersonalNumber,
             Email = user.Email,
             DateOfBirth = user.DateOfBirth,
-            Category = DbMock.categories.FirstOrDefault(cat => cat.Id == user.Id),
-            Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == user.Id)
+            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == user.Id),
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == user.Id)
         });
     }
 
     [HttpPost("add-new")]
     public ActionResult AddNew(User user)
     {
-        DbMock.users.Add(user);
+        DbMock.Users.Add(user);
         return Accepted();
     }
 
     [HttpPut("update")]
     public ActionResult Update(User user)
     {
-        var foundUser = DbMock.users.FirstOrDefault(x => x.Id == user.Id);
+        var foundUser = DbMock.Users.FirstOrDefault(x => x.Id == user.Id);
         if (foundUser == null) return NotFound();
         foundUser.Email = user.Email;
         foundUser.FirstName = user.FirstName;
@@ -78,16 +78,16 @@ public class UsersController : Controller
     [HttpDelete("delete/{id:int}")]
     public ActionResult Delete(int id)
     {
-        var user = DbMock.users.FirstOrDefault(x => x.Id == id);
+        var user = DbMock.Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
-        DbMock.users.Remove(user);
+        DbMock.Users.Remove(user);
         return Ok();
     }
 
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<User>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
+    public ActionResult<List<UserDto>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
     {
-        IEnumerable<User> query = DbMock.users;
+        IEnumerable<User> query = DbMock.Users;
 
         if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));
         if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.Contains(filterOptions.LastNameFilter));
@@ -97,7 +97,8 @@ public class UsersController : Controller
         if (filterOptions.HasPersonalNumberFilter) query = query.Where(x => x.PersonalNumber == filterOptions.PersonalNumberFilter);
         if (filterOptions.HasDateOfBirthEndFilter) query = query.Where(x => x.DateOfBirth < filterOptions.DateOfBirthEnd);
         if (filterOptions.HasDateOfBirthStartFilter) query = query.Where(x => x.DateOfBirth > filterOptions.DateOfBirthStart);
-        return Ok(query.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
+
+        var users = query.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -105,9 +106,16 @@ public class UsersController : Controller
             PersonalNumber = x.PersonalNumber,
             Email = x.Email,
             DateOfBirth = x.DateOfBirth,
-            Category = DbMock.categories.FirstOrDefault(cat => cat.Id == x.Id),
-            Status = DbMock.statuses.FirstOrDefault(sta => sta.Id == x.Id)
-        }));
+            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == x.Id),
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == x.Id)
+        });
+
+        var result = new GetPaginatedUsersDto()
+        {
+            Users = users
+        };
+
+        return Ok(result);
     }
 
     #endregion

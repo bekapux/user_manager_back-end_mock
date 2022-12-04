@@ -4,7 +4,7 @@ namespace UserManager;
 
 public static class DbMock
 {
-    public static List<User> users = new List<User>
+    public static List<User> Users = new()
     {
         new User
         {
@@ -30,7 +30,7 @@ public static class DbMock
         },
     };
 
-    public static List<Category> categories = new List<Category>
+    public static List<Category> Categories = new()
     {
         new Category
         {
@@ -84,7 +84,7 @@ public static class DbMock
         }
     };
 
-    public static List<Status> statuses = new List<Status>()
+    public static List<Status> Statuses = new()
     {
         new Status
         {
