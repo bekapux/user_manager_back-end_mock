@@ -9,17 +9,17 @@ public class StatusesController : Controller
     #region Actions
 
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<Status>> Paginate(int page=1, int itemsPerPage=5)
+    public ActionResult<List<Status>> Paginate(int page = 0, int itemsPerPage = 5)
     {
-        return Ok(DbMock.statuses.Skip((page-1)*itemsPerPage).Take(itemsPerPage));
+        return Ok(DbMock.statuses.Skip((page/*-1*/) * itemsPerPage).Take(itemsPerPage));
     }
 
     [HttpGet("get-page-number/{itemsPerPage:int}")]
     public ActionResult<int> GetPageNumber(int itemsPerPage = 5)
     {
-        return Ok(Math.Ceiling((float)DbMock.statuses.Count/itemsPerPage));
+        return Ok(Math.Ceiling((float)DbMock.statuses.Count / itemsPerPage));
     }
-    
+
     [HttpGet("get-by-id/{id:int}")]
     public ActionResult<Status> GetById(int id)
     {
@@ -27,7 +27,7 @@ public class StatusesController : Controller
         if (status == null) return NotFound();
         return Ok(status);
     }
-    
+
     [HttpPost("add-new/{name}")]
     public ActionResult AddNew(string name)
     {
@@ -38,7 +38,7 @@ public class StatusesController : Controller
         });
         return Accepted();
     }
-    
+
     [HttpPut("update/{id:int}/{name}")]
     public ActionResult Update(int id, string name)
     {
@@ -58,5 +58,5 @@ public class StatusesController : Controller
     }
 
     #endregion
-    
+
 }

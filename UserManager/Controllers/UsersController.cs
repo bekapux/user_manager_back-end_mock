@@ -13,9 +13,9 @@ public class UsersController : Controller
     #region Actions
 
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<User>> Paginate(int page = 1, int itemsPerPage = 5)
+    public ActionResult<List<User>> Paginate(int page = 0, int itemsPerPage = 5)
     {
-        return Ok(DbMock.users.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
+        return Ok(DbMock.users.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -31,7 +31,7 @@ public class UsersController : Controller
     [HttpGet("get-page-number/{itemsPerPage:int}")]
     public ActionResult<List<User>> GetPageNumber(int itemsPerPage = 5)
     {
-        return Ok(Math.Ceiling((float)DbMock.users.Count/itemsPerPage));
+        return Ok(Math.Ceiling((float)DbMock.users.Count / itemsPerPage));
     }
 
     [HttpGet("get-by-id/{id:int}")]
@@ -87,7 +87,7 @@ public class UsersController : Controller
     public ActionResult<List<User>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
     {
         IEnumerable<User> query = DbMock.users;
-        
+
         if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));
         if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.Contains(filterOptions.LastNameFilter));
         if (filterOptions.HasEmailFilter) query = query.Where(x => x.Email.Contains(filterOptions.EmailFilter));
