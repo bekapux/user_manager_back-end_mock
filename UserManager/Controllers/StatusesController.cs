@@ -57,6 +57,16 @@ public class StatusesController : Controller
         return Ok();
     }
 
+    [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
+    public ActionResult<List<Status>> GetFiltered(string statusFilter, int page = 1, int itemsPerPage = 5)
+    {
+        IEnumerable<Status> query = new List<Status>(DbMock.statuses);
+        return Ok(
+            query
+                .Where(x => x.Name.Contains(statusFilter))
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+        );
+    }
     #endregion
-
 }

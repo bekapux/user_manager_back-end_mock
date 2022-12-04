@@ -83,7 +83,7 @@ public class UsersController : Controller
         return Ok();
     }
 
-    [HttpPost("filter/{page:int}/{itemsPerPage}")]
+    [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
     public ActionResult<List<User>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
     {
         IEnumerable<User> query = DbMock.users;

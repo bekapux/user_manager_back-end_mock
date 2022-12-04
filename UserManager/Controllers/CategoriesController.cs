@@ -58,5 +58,17 @@ public class CategoriesController : Controller
         return Ok();
     }
 
+    [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
+    public ActionResult<List<Category>> GetFiltered(string categoryFilter, int page = 1, int itemsPerPage = 5)
+    {
+        IEnumerable<Category> query = new List<Category>(DbMock.categories);
+        return Ok(
+            query
+                .Where(x => x.Name.Contains(categoryFilter))
+                .Skip((page - 1) * itemsPerPage)
+                .Take(itemsPerPage)
+        );
+    }
+
     #endregion
 }
