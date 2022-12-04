@@ -58,11 +58,11 @@ public class CategoriesController : Controller
         return Ok();
     }
 
-    [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<GetPaginatedCategoriesDto> GetFiltered(string categoryFilter, int page = 1, int itemsPerPage = 5)
+    [HttpGet("filter/{page:int}/{itemsPerPage:int}/{filterPhrase")]
+    public ActionResult<GetPaginatedCategoriesDto> GetFiltered(string filterPhrase, int page = 1, int itemsPerPage = 5)
     {
         var filteredCategories = new List<Category>(DbMock.Categories)
-            .Where(x => x.Name.ToUpper().Contains(categoryFilter.ToUpper())).ToList();
+            .Where(x => x.Name.ToUpper().Contains(filterPhrase.ToUpper())).ToList();
 
         return Ok( new GetPaginatedCategoriesDto()
         {
