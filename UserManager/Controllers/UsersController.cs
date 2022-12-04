@@ -90,8 +90,8 @@ public class UsersController : Controller
         IEnumerable<User> query = DbMock.Users;
 
         if (filterOptions.HasFirstNameFilter) query = query.Where(x => x.FirstName.Contains(filterOptions.FirstNameFilter));
-        if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.Contains(filterOptions.LastNameFilter));
-        if (filterOptions.HasEmailFilter) query = query.Where(x => x.Email.Contains(filterOptions.EmailFilter));
+        if (filterOptions.HasLastNameFilter) query = query.Where(x => x.LastName.ToUpper().Contains(filterOptions.LastNameFilter.ToUpper()));
+        if (filterOptions.HasEmailFilter) query = query.Where(x => x.Email.ToUpper().Contains(filterOptions.EmailFilter.ToUpper()));
         if (filterOptions.HasCategoryIdFilter) query = query.Where(x => x.CategoryId == filterOptions.CategoryIdFilter);
         if (filterOptions.HasStatusIdFilter) query = query.Where(x => x.StatusId == filterOptions.StatusIdFilter);
         if (filterOptions.HasPersonalNumberFilter) query = query.Where(x => x.PersonalNumber == filterOptions.PersonalNumberFilter);
