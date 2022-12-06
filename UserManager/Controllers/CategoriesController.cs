@@ -41,7 +41,7 @@ public class CategoriesController : Controller
         DbMock.Categories.Add(new Category()
         {
             Name = name,
-            Id = DbMock.Categories.Max((x => x.Id)) + 1
+            Id = DbMock.Categories.Max(x => x.Id) + 1
         });
         return Accepted();
     }
