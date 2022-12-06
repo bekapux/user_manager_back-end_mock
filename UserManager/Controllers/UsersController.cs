@@ -24,8 +24,8 @@ public class UsersController : Controller
             PersonalNumber = x.PersonalNumber,
             Email = x.Email,
             DateOfBirth = x.DateOfBirth,
-            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == x.Id),
-            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == x.Id)
+            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == x.CategoryId),
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == x.StatusId)
         }).ToList();
 
         var getPaginatedUsers = new GetPaginatedUsersDto
