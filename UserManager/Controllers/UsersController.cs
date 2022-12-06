@@ -74,6 +74,7 @@ public class UsersController : Controller
     [HttpPost("add-new")]
     public ActionResult AddNew(User user)
     {
+        user.Id= DbMock.Users.Max(x => x.Id)+1;
         DbMock.Users.Add(user);
         return Accepted();
     }
