@@ -14,7 +14,7 @@ public class UsersController : Controller
     #region Actions
 
     [HttpGet("get-paginated/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<GetPaginatedUsersDto> Paginate(int page = 0, int itemsPerPage = 5)
+    public ActionResult<GetPaginatedUsersDto> Paginate(int page = 0, int itemsPerPage = 5, bool GetAll = false)
     {
         var users = DbMock.Users.Skip((page/* - 1*/) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
@@ -34,6 +34,23 @@ public class UsersController : Controller
             RowNumber = DbMock.Users.Count
         };
         return Ok(getPaginatedUsers);
+    }
+
+    [HttpGet("get-all")]
+    public ActionResult<IEnumerable<UserDto>> GetAll()
+    {
+        var users = DbMock.Users.Select(x => new UserDto
+        {
+            Id = x.Id,
+            FirstName = x.FirstName,
+            LastName = x.LastName,
+            PersonalNumber = x.PersonalNumber,
+            Email = x.Email,
+            DateOfBirth = x.DateOfBirth,
+            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == x.Id),
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == x.Id)
+        }).ToList();
+        return Ok(users);
     }
 
     [HttpGet("get-by-id/{id:int}")]

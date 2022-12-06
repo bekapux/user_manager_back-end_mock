@@ -20,6 +20,12 @@ public class StatusesController : Controller
         return Ok(result);
     }
 
+    [HttpGet("get-all")]
+    public ActionResult<IEnumerable<Status>> GetAll()
+    {
+        return Ok(DbMock.Statuses);
+    }
+
     [HttpGet("get-by-id/{id:int}")]
     public ActionResult<Status> GetById(int id)
     {

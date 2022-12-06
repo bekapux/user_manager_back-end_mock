@@ -21,6 +21,12 @@ public class CategoriesController : Controller
         return Ok(paginatedCategories);
     }
 
+    [HttpGet("get-all")]
+    public ActionResult<IEnumerable<Category>> GetAll()
+    {
+        return Ok(DbMock.Categories);
+    }
+
     [HttpGet("get-by-id/{id:int}")]
     public ActionResult<Category> GetById(int id)
     {
