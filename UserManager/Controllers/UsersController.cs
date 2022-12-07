@@ -67,7 +67,7 @@ public class UsersController : Controller
             Email = user.Email,
             DateOfBirth = user.DateOfBirth,
             Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == user.CategoryId),
-            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == user.CategoryId)
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == user.StatusId)
         };
 
         return Ok(result);
