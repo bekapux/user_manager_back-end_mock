@@ -4,7 +4,6 @@ public class UsersFilterOptions
 {
     public string EmailFilter { get; set; }
     public string PersonalNumberFilter { get; set; }
-    public string LastNameNameFilter { get; set; }
     public string FirstNameFilter { get; set; }
     public string LastNameFilter { get; set; }
     public DateTime? DateOfBirthStart { get; set; }
