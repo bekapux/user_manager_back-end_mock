@@ -58,7 +58,7 @@ public class UsersController : Controller
     {
         var user = DbMock.Users.FirstOrDefault(x => x.Id == id);
         if (user == null) return NotFound();
-        return Ok(new UserDto()
+        var result = new UserDto()
         {
             Id = user.Id,
             FirstName = user.FirstName,
@@ -66,9 +66,11 @@ public class UsersController : Controller
             PersonalNumber = user.PersonalNumber,
             Email = user.Email,
             DateOfBirth = user.DateOfBirth,
-            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == user.Id),
-            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == user.Id)
-        });
+            Category = DbMock.Categories.FirstOrDefault(cat => cat.Id == user.CategoryId),
+            Status = DbMock.Statuses.FirstOrDefault(sta => sta.Id == user.CategoryId)
+        };
+
+        return Ok(result);
     }
 
     [HttpPost("add-new")]
