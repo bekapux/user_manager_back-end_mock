@@ -118,8 +118,8 @@ public class UsersController : Controller
         if (filterOptions.HasPersonalNumberFilter) query = query.Where(x => x.PersonalNumber == filterOptions.PersonalNumberFilter);
         if (filterOptions.HasDateOfBirthEndFilter) query = query.Where(x => x.DateOfBirth < filterOptions.DateOfBirthEnd);
         if (filterOptions.HasDateOfBirthStartFilter) query = query.Where(x => x.DateOfBirth > filterOptions.DateOfBirthStart);
-
-        var users = query.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
+        query = query.ToList();
+        var users = query.Skip((page) * itemsPerPage).Take(itemsPerPage).Select(x => new UserDto
         {
             Id = x.Id,
             FirstName = x.FirstName,

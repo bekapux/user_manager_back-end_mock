@@ -28,6 +28,138 @@ public static class DbMock
             StatusId = 3,
             DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
         },
+        new User
+        {
+            Id = 3,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 4,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 5,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 6,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 7,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 8,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 9,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 10,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 11,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 12,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 13,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
+        new User
+        {
+            Id = 14,
+            Email = "mail2@mail.com",
+            CategoryId = 2,
+            FirstName = "Someone",
+            LastName = "Else",
+            PersonalNumber = "01011091505",
+            StatusId = 3,
+            DateOfBirth = new DateTime(year: 1991, month: 3, day: 29)
+        },
     };
 
     public static List<Category> Categories = new()
