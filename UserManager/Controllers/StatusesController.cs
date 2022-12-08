@@ -64,7 +64,7 @@ public class StatusesController : Controller
     }
 
     [HttpGet("filter/{page:int}/{itemsPerPage:int}/{filterPhrase}")]
-    public ActionResult<GetPaginatedStatusesDto> GetFiltered(string filterPhrase, int page = 1, int itemsPerPage = 5)
+    public ActionResult<GetPaginatedStatusesDto> GetFiltered(string filterPhrase, int page = 0, int itemsPerPage = 5)
     {
         var filteredStatuses = new List<Status>(DbMock.Statuses)
             .Where(x => x.Name.ToUpper().Contains(filterPhrase.ToUpper())).ToList();
@@ -72,7 +72,7 @@ public class StatusesController : Controller
         return Ok( new GetPaginatedStatusesDto()
         {
             Statuses = filteredStatuses
-                .Skip((page - 1) * itemsPerPage)
+                .Skip((page) * itemsPerPage)
                 .Take(itemsPerPage),
             RowNumber = filteredStatuses.Count()
         });

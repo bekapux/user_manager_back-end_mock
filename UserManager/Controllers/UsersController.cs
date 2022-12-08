@@ -106,7 +106,7 @@ public class UsersController : Controller
     }
 
     [HttpPost("filter/{page:int}/{itemsPerPage:int}")]
-    public ActionResult<List<UserDto>> GetFiltered(UsersFilterOptions filterOptions, int page = 1, int itemsPerPage = 5)
+    public ActionResult<List<UserDto>> GetFiltered(UsersFilterOptions filterOptions, int page = 0, int itemsPerPage = 5)
     {
         IEnumerable<User> query = new List<User>(DbMock.Users);
 

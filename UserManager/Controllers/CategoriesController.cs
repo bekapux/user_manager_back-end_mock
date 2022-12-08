@@ -73,7 +73,7 @@ public class CategoriesController : Controller
         return Ok( new GetPaginatedCategoriesDto()
         {
             Categories = filteredCategories
-                .Skip((page - 1) * itemsPerPage)
+                .Skip((page) * itemsPerPage)
                 .Take(itemsPerPage),
             RowNumber = filteredCategories.Count()
         });
